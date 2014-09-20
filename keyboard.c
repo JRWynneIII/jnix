@@ -94,6 +94,8 @@ size_t isShift = 0;
 
 void keyboard_handler()
 {
+  char command[20];
+  int commandIdx = 0;
 	unsigned char scancode;
 	//Read from port 60 when handler is called.
 	//0x60 is the keyboard key port
@@ -121,13 +123,17 @@ void keyboard_handler()
 		if (isShift != 0)
 		{
 			terminal_putchar(upperKbdus[scancode]);
+      command[commandIdx] = upperKbdus[scancode];
+      commandIdx++;
 		}
 		else
 			terminal_putchar(kbdus[scancode]);
+      command[commandIdx] = kbdus[scancode];
+      commandIdx++;
 
 		if (kbdus[scancode] == '\n')
 		{
-			runShell();
+			runShell(command);
 		}
 		//key just pressed down
 	}

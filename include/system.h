@@ -3,7 +3,7 @@
 
 #include "vga.h"
 
-void runShell();
+void runShell(char* command);
 
 void outportb (unsigned short _port, unsigned char _data);
 
