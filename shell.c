@@ -9,12 +9,16 @@
 #error "You are not using a cross-compiler. Exiting."
 #endif
 
-typedef struct node
+
+typedef struct nodeT
 {
+  int len;
   void (*cmd)();
-  char* name;
-  struct node* next;
-} NODE;
+  char c1;
+  char c2;
+  char c3;
+  struct nodeT* next;
+}NODE;
 
 /*SHELL COMMANDS*/
 NODE head;
@@ -24,36 +28,46 @@ int numOfCmds = 3;
 
 void time()
 {
-  tcputs("\nTime\n", COLOR_WHITE);
+  tcputs("Time\n", COLOR_WHITE);
 }
 
 void help()
 {
-  tcputs("\nHelp\n",COLOR_WHITE);
+  tcputs("Help\n",COLOR_WHITE);
 }
 
 void info()
 {
-  tcputs("\nHobbyOS\nCopyright GPUJake 2014\n", COLOR_WHITE);
+  tcputs("HobbyOS\nCopyright GPUJake 2014\n", COLOR_WHITE);
 }
 
 void populateCommands()
 {
   head.cmd = &time;
-  head.name = "time";
-  head.next = &help;
+  head.len = 4;
+  head.c1 = 't';
+  head.c2 = 'i';
+  head.c3 = 'm';
+  head.next = &cmdHelp;
 
   cmdHelp.cmd = &help; 
-  cmdHelp.name = "help";
-  cmdHelp.next = &info;
+  cmdHelp.len = 4;
+  cmdHelp.c1 = 'h';
+  cmdHelp.c2 = 'e';
+  cmdHelp.c3 = 'l';
+  cmdHelp.next = &cmdInfo;
 
   cmdInfo.cmd = &info;
-  cmdInfo.name = "info";
+  cmdInfo.len = 4;
+  cmdInfo.c1 = 'i';
+  cmdInfo.c2 = 'n';
+  cmdInfo.c3 = 'f';
   cmdInfo.next = NULL;
 }
 
 void init_shell()
 {
+  populateCommands();
 	tcputs("$>> ", COLOR_GREEN);
 	irq_install_handler(1, keyboard_handler);
 }
@@ -61,22 +75,35 @@ void init_shell()
 NODE* findCommand(char* command)
 {
   int i = 0;
-  for (i = 0; i< numOfCmds; i++)
+  NODE* current;
+  current = &head;
+  for(i = 0; i<numOfCmds; i++)//while(current->next)
   {
-    NODE* current;
-    current = &head;
-    if (current->name == command)
-      return current;
-    else
-      current = current->next;
+    if (current->c1 == command[0])
+    {
+      if (current->c2 == command[1])
+      {
+        if (current->c3 == command[2])
+        {
+          if (current->len == (strlen(command)-1))
+          {
+            return current;
+          }
+        }
+      }
+    }
+    current = current->next;
   }
+  tcputs("ERROR COMMAND NOT FOUND\n", COLOR_RED);
+  return NULL;
 }
 
 void runShell(char* command)
 {
   NODE* cmd;
   cmd = findCommand(command);
-  cmd->cmd();
+  if (cmd)
+    cmd->cmd();
 	tcputs("$>> ", COLOR_GREEN);
 }
 
