@@ -12,19 +12,59 @@
 
 typedef struct nodeT
 {
-  int len;
+  unsigned int len;
   void (*cmd)();
   char c1;
   char c2;
   char c3;
+  char* name;
   struct nodeT* next;
-}NODE;
+} NODE;
 
 /*SHELL COMMANDS*/
 NODE head;
 NODE cmdHelp;
 NODE cmdInfo;
-int numOfCmds = 3;
+NODE cmdRun;
+NODE mallocTest;
+int numOfCmds = 5;
+
+void mallocTestCmd()
+{
+  tcputs("MallocTest\n", COLOR_WHITE);
+  int* testArray = (int*)malloc(5*sizeof(int));
+  testArray[0] = 10;
+  testArray[1] = 22;
+  testArray[2] = 33;
+  testArray[3] = 45;
+  testArray[4] = 56;
+
+  if (testArray[0] == 10)
+    tputs("\tPASS\n");
+  else
+    tcputs("\tFAIL\n", COLOR_RED);
+  if (testArray[1] == 22)
+    tputs("\tPASS\n");
+  else
+    tcputs("\tFAIL\n", COLOR_RED);
+  if (testArray[2] == 33)
+    tputs("\tPASS\n");
+  else
+    tcputs("\tFAIL\n", COLOR_RED);
+  if (testArray[3] == 45)
+    tputs("\tPASS\n");
+  else
+    tcputs("\tFAIL\n", COLOR_RED);
+  if (testArray[4] == 56)
+    tputs("\tPASS\n");
+  else
+    tcputs("\tFAIL\n", COLOR_RED);
+}
+
+void run()
+{
+  tcputs("Running...\n",COLOR_WHITE);
+}
 
 void time()
 {
@@ -33,7 +73,14 @@ void time()
 
 void help()
 {
-  tcputs("Help\n",COLOR_WHITE);
+  tcputs("Availible Commands:\n",COLOR_WHITE);
+  NODE* current = &head;
+  for (int i = 0; i < numOfCmds; i++)
+  {
+    tcputs(current->name, COLOR_WHITE);
+    tputs("\n");
+    current = current->next;  
+  }
 }
 
 void info()
@@ -41,9 +88,21 @@ void info()
   tcputs("HobbyOS\nCopyright GPUJake 2014\n", COLOR_WHITE);
 }
 
+void getCmdCount()
+{
+  NODE* current;
+  current = &head;
+  while (current->next)
+  {
+    numOfCmds++;
+    current = current->next;
+  }
+}
+
 void populateCommands()
 {
   head.cmd = &time;
+  head.name = "time";
   head.len = 4;
   head.c1 = 't';
   head.c2 = 'i';
@@ -51,6 +110,7 @@ void populateCommands()
   head.next = &cmdHelp;
 
   cmdHelp.cmd = &help; 
+  cmdHelp.name = "help";
   cmdHelp.len = 4;
   cmdHelp.c1 = 'h';
   cmdHelp.c2 = 'e';
@@ -58,15 +118,33 @@ void populateCommands()
   cmdHelp.next = &cmdInfo;
 
   cmdInfo.cmd = &info;
+  cmdInfo.name = "info";
   cmdInfo.len = 4;
   cmdInfo.c1 = 'i';
   cmdInfo.c2 = 'n';
   cmdInfo.c3 = 'f';
-  cmdInfo.next = NULL;
+  cmdInfo.next = &cmdRun;
+
+  cmdRun.cmd = &run;
+  cmdRun.name = "run";
+  cmdRun.len = 3;
+  cmdRun.c1 = 'r';
+  cmdRun.c2 = 'u';
+  cmdRun.c3 = 'n';
+  cmdRun.next = &mallocTest;
+
+  mallocTest.cmd = &mallocTestCmd;
+  mallocTest.name = "mallocTest";
+  mallocTest.len = 10;
+  mallocTest.c1 = 'm';
+  mallocTest.c2 = 'a';
+  mallocTest.c3 = 'l';
+  mallocTest.next = NULL;
 }
 
 void init_shell()
 {
+  getCmdCount();
   populateCommands();
 	tcputs("$>> ", COLOR_GREEN);
 	irq_install_handler(1, keyboard_handler);

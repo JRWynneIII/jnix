@@ -5,6 +5,8 @@
 
 void runShell(char* command);
 
+void* malloc(size_t size);
+
 void outportb (unsigned short _port, unsigned char _data);
 
 static inline void io_wait(void)
