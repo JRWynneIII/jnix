@@ -40,4 +40,7 @@ void tputs(const char* data);
 void tcputs(const char* data, uint8_t color);
 
 void cls();
+
+char* itoa(int value);
+
 #endif

@@ -27,12 +27,47 @@ NODE cmdHelp;
 NODE cmdInfo;
 NODE cmdRun;
 NODE mallocTest;
-int numOfCmds = 5;
+NODE itoaTest;
+NODE cmdForth;
+NODE cmdTestTimer;
+int numOfCmds = 8;
+
+void initForth()
+{
+  tcputs("ok\n", COLOR_WHITE);
+}
+
+void testTimer()
+{
+  tcputs("Testing Timer....\n",COLOR_WHITE);
+  int i = 0;
+  for (i = 0; i < 10; i++)
+  {
+    wait(100);  //wait for 100 milliseconds
+    tcputs("TICK\n",COLOR_WHITE);
+  }
+}
+
+void itoaTestCmd()
+{
+  int i = 0;
+  for (i = 0; i<100; i++)
+  {
+    tputs(itoa(i));
+    tputs("\n");
+  }
+}
 
 void mallocTestCmd()
 {
   tcputs("MallocTest\n", COLOR_WHITE);
   int* testArray = (int*)malloc(5*sizeof(int));
+  int test[5] = {1,2,3,4,5};
+
+  tputs("Array is allocated at: ");
+  tputs(itoa(testArray));
+  tputs("\n");
+
   testArray[0] = 10;
   testArray[1] = 22;
   testArray[2] = 33;
@@ -59,6 +94,18 @@ void mallocTestCmd()
     tputs("\tPASS\n");
   else
     tcputs("\tFAIL\n", COLOR_RED);
+  int* test2 = (int*)malloc(100*sizeof(int));
+  int i = 0;
+  for (i = 0; i<100; i++)
+   test2[i] = i;
+  for (i = 0; i<100; i++)
+  {
+   tputs(itoa(test2[i])); 
+  }
+  tputs(itoa(test2));
+  tputs("\n");
+  tputs(itoa(test));
+  tputs("\n");
 }
 
 void run()
@@ -139,7 +186,31 @@ void populateCommands()
   mallocTest.c1 = 'm';
   mallocTest.c2 = 'a';
   mallocTest.c3 = 'l';
-  mallocTest.next = NULL;
+  mallocTest.next = &itoaTest;
+
+  itoaTest.cmd = &itoaTestCmd;
+  itoaTest.name = "itoaTest";
+  itoaTest.len = 8;
+  itoaTest.c1 = 'i';
+  itoaTest.c2 = 't';
+  itoaTest.c3 = 'o';
+  itoaTest.next = &cmdForth;
+
+  cmdForth.cmd = &initForth;
+  cmdForth.name = "forth";
+  cmdForth.len = 5;
+  cmdForth.c1 = 'f';
+  cmdForth.c2 = 'o';
+  cmdForth.c3 = 'r';
+  cmdForth.next = &cmdTestTimer;
+
+  cmdTestTimer.cmd = &testTimer;
+  cmdTestTimer.name = "testTimer";
+  cmdTestTimer.len = 9;
+  cmdTestTimer.c1 = 't';
+  cmdTestTimer.c2 = 'e';
+  cmdTestTimer.c3 = 's';
+  cmdTestTimer.next = NULL;
 }
 
 void init_shell()

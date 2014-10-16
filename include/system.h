@@ -9,6 +9,8 @@ void* malloc(size_t size);
 
 void outportb (unsigned short _port, unsigned char _data);
 
+void wait(int ticks);
+
 static inline void io_wait(void)
 {
     /* TODO: This is probably fragile. */
@@ -47,6 +49,7 @@ struct regs
 };
 
 void isrs_install();
+void timer_install();
 void irq_install_handler(int irq, void (*handler)(struct regs *r));
 void irq_uninstall_handler(int irq);
 void install_irq();

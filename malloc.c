@@ -8,9 +8,9 @@
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
-unsigned char* mallocBase = 0x00100000;
-unsigned char* mallocTop = 0x00FFFFFF;
-unsigned char* freeBottom;
+unsigned char* mallocBase = (unsigned char*)0x01000000;
+unsigned char* mallocTop = (unsigned char*)0xBFFFFFFF;
+unsigned char* freeBottom = (unsigned char*)0x01000000;
 
 void* malloc(size_t size)
 {

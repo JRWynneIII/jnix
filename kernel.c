@@ -20,6 +20,8 @@ void kernel_main()
 	isrs_install();
 	tcputs("Remapping the PIC and setting up IRQs...\n\n",COLOR_WHITE);
 	install_irq();
+  tcputs("Installing Timer ISR....\n\n\n",COLOR_WHITE);
+  timer_install();
 	tcputs("Starting shell....\n\n\n",COLOR_WHITE);
 	init_shell();
 

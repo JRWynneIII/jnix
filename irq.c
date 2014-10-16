@@ -107,8 +107,8 @@ void install_irq()
 	init_PIC();
 	//install the appropriate ISRs into the IDT
 	idt_set_gate(32, (unsigned)irq0, 0x08, 0x8E);
-    	idt_set_gate(33, (unsigned)irq1, 0x08, 0x8E);
-    	idt_set_gate(34, (unsigned)irq2, 0x08, 0x8E);
+  idt_set_gate(33, (unsigned)irq1, 0x08, 0x8E);
+  idt_set_gate(34, (unsigned)irq2, 0x08, 0x8E);
 	//turn on interupts!
 	__asm__ __volatile__("sti");
 }
