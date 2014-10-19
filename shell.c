@@ -35,6 +35,7 @@ int numOfCmds = 8;
 void initForth()
 {
   tcputs("ok\n", COLOR_WHITE);
+  for(;;);
 }
 
 void testTimer()

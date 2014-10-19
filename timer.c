@@ -6,11 +6,12 @@
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
-volatile unsigned long timer_ticks = 0;
+volatile int timer_ticks = 0;
 
 void timer_handler()
 {
   timer_ticks++;
+//  tputs("Got tick");
 }
 
 void set_Interval(int hertz)

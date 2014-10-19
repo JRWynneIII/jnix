@@ -24,6 +24,7 @@ void kernel_main()
   timer_install();
 	tcputs("Starting shell....\n\n\n",COLOR_WHITE);
 	init_shell();
+  __asm__ ("hlt");
 
 	for (;;);
 }
