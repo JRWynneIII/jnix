@@ -1,8 +1,8 @@
 HOST?=$(shell ../default-host.sh)
-HOSTARCH:=i586#x86_64#$(shell ../target-triplet-to-arch.sh $(HOST))
+HOSTARCH:=i686#x86_64#$(shell ../target-triplet-to-arch.sh $(HOST))
  
-CC=i586-elf-gcc#x86_64-elf-gcc
-AS=i586-elf-as
+CC=i686-elf-gcc#x86_64-elf-gcc
+AS=i686-elf-as
 CFLAGS?=-O2 -g
 CPPFLAGS?=
 LDFLAGS?=

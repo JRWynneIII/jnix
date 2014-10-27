@@ -1,2 +1,2 @@
 #!/bin/sh
-echo i586-elf #x86_64-elf
+echo i686-elf #x86_64-elf

@@ -1,14 +1,11 @@
 #include <stdbool.h> /* C doesn't have booleans by default. */
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <kernel/system.h>
 #include <kernel/keyboard.h>
 
-/* Check if the compiler thinks if we are targeting the wrong operating system. */
-#if defined(__linux__)
-#error "You are not using a cross-compiler. Exiting."
-#endif
-
+void waitCmd();
 
 typedef struct nodeT
 {
@@ -214,14 +211,6 @@ void populateCommands()
   cmdTestTimer.next = NULL;
 }
 
-void init_shell()
-{
-  getCmdCount();
-  populateCommands();
-	tcputs("$>> ", COLOR_GREEN);
-	irq_install_handler(1, keyboard_handler);
-}
-
 NODE* findCommand(char* command)
 {
   int i = 0;
@@ -248,12 +237,31 @@ NODE* findCommand(char* command)
   return NULL;
 }
 
+
 void runShell(char* command)
 {
   NODE* cmd;
   cmd = findCommand(command);
   if (cmd)
     cmd->cmd();
-	tcputs("$>> ", COLOR_GREEN);
+  tcputs("$>> ", COLOR_GREEN);
+  waitCmd();
 }
 
+void waitCmd()
+{
+  char* cmd;
+  scanf(cmd);
+  putchar('\n');
+  puts(cmd);
+  runShell(cmd);
+}
+
+void init_shell()
+{
+  getCmdCount();
+  populateCommands();
+  tcputs("$>> ", COLOR_GREEN);
+  irq_install_handler(1, keyboard_handler);
+  waitCmd();
+}

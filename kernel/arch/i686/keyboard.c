@@ -5,6 +5,7 @@
 #include <kernel/system.h>
 
 uint16_t keyboard_isEnter = 0;
+unsigned char keyBuf;
 
 unsigned char kbdus[128] =
 {
@@ -87,8 +88,6 @@ unsigned char upperKbdus[128] =
 };
 
 bool isShift = false;
-int commandIdx = 0;
-char command[128];
 
 void keyboard_handler()
 {
@@ -121,23 +120,11 @@ void keyboard_handler()
     }
     if (isShift)
     {
-      terminal_putchar(upperKbdus[scancode]);
-      command[commandIdx] = upperKbdus[scancode];
-      commandIdx++;
+      keyBuf = upperKbdus[scancode];
     }
     else
     {
-      terminal_putchar(kbdus[scancode]);
-      command[commandIdx] = kbdus[scancode];
-      commandIdx++;
+      keyBuf = kbdus[scancode];
     }
-
-    if (kbdus[scancode] == '\n')
-    {
-      runShell(command);
-      memset(command, '\0', commandIdx);
-      commandIdx = 0;
-    }
-    //key just pressed down
   }
 }

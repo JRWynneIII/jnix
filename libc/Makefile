@@ -1,7 +1,7 @@
 HOST?=$(shell ../default-host.sh)
-HOSTARCH:=i586#x86_64#$(shell ../target-triplet-to-arch.sh $(HOST))
+HOSTARCH:=i686#x86_64#$(shell ../target-triplet-to-arch.sh $(HOST))
  
-CC=i586-elf-gcc#x86_64-elf-gcc
+CC=i686-elf-gcc#x86_64-elf-gcc
 CFLAGS?=-O2 -g -std=gnu99
 CPPFLAGS?=
 LDFLAGS?=
@@ -14,7 +14,7 @@ INCLUDEDIR?=$(PREFIX)/include
 LIBDIR?=$(EXEC_PREFIX)/lib
  
 CFLAGS:=$(CFLAGS) -ffreestanding -fno-builtin -Wall -Wextra
-CPPFLAGS:=$(CPPFLAGS) -D__is_jforth_libc -Iinclude
+CPPFLAGS:=$(CPPFLAGS) -D__is_jforth_libc -Iinclude -I../sysroot/usr/include
 LIBK_CFLAGS:=-Wall -Wextra -ffreestanding -fno-builtin
 LIBK_CPPFLAGS:=$(CPPFLAGS) -D__is_jforth_kernel -I../sysroot/usr/include
  
@@ -29,6 +29,7 @@ LIBK_CPFLAGS:=$(LIBK_CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
  
 FREEOBJS:=\
 $(ARCH_FREEOBJS) \
+stdio/scanf.o \
 stdio/printf.o \
 stdio/putchar.o \
 stdio/puts.o \

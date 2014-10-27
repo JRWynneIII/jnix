@@ -3,7 +3,7 @@
 
 void keyboard_handler(struct regs *r);
 
-bool enter = false;
+extern char keyBuf;
 
 extern uint16_t keyboard_isEnter;
 
