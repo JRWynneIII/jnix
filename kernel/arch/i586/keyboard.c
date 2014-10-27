@@ -1,8 +1,8 @@
 #include <stdbool.h> /* C doesn't have booleans by default. */
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <kernel/system.h>
-
 
 uint16_t keyboard_isEnter = 0;
 
@@ -86,7 +86,7 @@ unsigned char upperKbdus[128] =
     0,  /* All other keys are undefined */
 };
 
-size_t isShift = 0;
+bool isShift = false;
 int commandIdx = 0;
 char command[128];
 
@@ -101,11 +101,14 @@ void keyboard_handler()
   if (kbdus[scancode] == 0)
     return;
 
-  if ((scancode & 0x80) != 0 )
+  unsigned char sc = scancode;
+  if ((sc & 0x80) != 0 )
   {
+    //0xAA and 0xB6 are the shift release scancodes
     if (scancode == 0xAA || scancode == 0xB6)
     {
-      isShift = 0;
+      //if the release bit is set and the scancode is for a shift key or not then
+      isShift = false;
       return;
     }
   }
@@ -113,10 +116,10 @@ void keyboard_handler()
   {
     if (kbdus[scancode] == 91 || kbdus[scancode] == 90)
     {
-      isShift = 1;
+      isShift = true;
       return;
     }
-    if (isShift != 0)
+    if (isShift)
     {
       terminal_putchar(upperKbdus[scancode]);
       command[commandIdx] = upperKbdus[scancode];
