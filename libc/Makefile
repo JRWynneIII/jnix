@@ -29,7 +29,7 @@ LIBK_CPFLAGS:=$(LIBK_CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
  
 FREEOBJS:=\
 $(ARCH_FREEOBJS) \
-stdio/scanf.o \
+stdio/gets.o \
 stdio/printf.o \
 stdio/putchar.o \
 stdio/puts.o \

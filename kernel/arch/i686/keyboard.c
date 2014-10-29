@@ -3,8 +3,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <kernel/system.h>
+#include <kernel/keyboard.h>
 
-uint16_t keyboard_isEnter = 0;
 unsigned char keyBuf;
 
 unsigned char kbdus[128] =
@@ -87,7 +87,7 @@ unsigned char upperKbdus[128] =
     0,  /* All other keys are undefined */
 };
 
-bool isShift = false;
+volatile bool isShift = false;
 
 void keyboard_handler()
 {
@@ -95,36 +95,33 @@ void keyboard_handler()
   //Read from port 60 when handler is called.
   //0x60 is the keyboard key port
   scancode = inportb(0x60);
-  //if top bit is set, then key has just been released
-  //useful for shifts and control/alt
+
+  //if the scancode is for release of the shift key, then change into unshifted mode
+  if (scancode == 0xAA || scancode == 0xB6)
+  {
+    isShift = false; 
+    return;
+  }
+
+  //if the scancode's character is a 0 then just return
   if (kbdus[scancode] == 0)
     return;
+  //If the scancode is for the shift key(s) then enter shift mode
+  if (scancode == 0x36 || scancode == 0x2A)
+  {
+    isShift = true;
+    return;
+  }
 
-  unsigned char sc = scancode;
-  if ((sc & 0x80) != 0 )
-  {
-    //0xAA and 0xB6 are the shift release scancodes
-    if (scancode == 0xAA || scancode == 0xB6)
-    {
-      //if the release bit is set and the scancode is for a shift key or not then
-      isShift = false;
-      return;
-    }
-  }
+  //if the top bit is set (IE the key has been released, return
+  if ((scancode & 0x80) != 0)
+    return;
+
+  //load the key into the buffer
+  if (isShift)
+    keyBuf = upperKbdus[scancode];
   else
-  {
-    if (kbdus[scancode] == 91 || kbdus[scancode] == 90)
-    {
-      isShift = true;
-      return;
-    }
-    if (isShift)
-    {
-      keyBuf = upperKbdus[scancode];
-    }
-    else
-    {
-      keyBuf = kbdus[scancode];
-    }
-  }
+    keyBuf = kbdus[scancode];
+
+
 }

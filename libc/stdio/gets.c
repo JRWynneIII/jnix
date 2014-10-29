@@ -7,7 +7,7 @@
 #include <kernel/keyboard.h>
 #include <kernel/tty.h>
 
-void scanf(char* s)
+void gets(char* s)
 {
   unsigned char c;
   int i = 0;
@@ -27,4 +27,6 @@ void scanf(char* s)
       keyBuf = '\0';
     }
   }
+  keyBuf = '\0';
+  s[i] = '\0';
 }

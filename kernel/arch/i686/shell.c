@@ -41,7 +41,7 @@ void testTimer()
   int i = 0;
   for (i = 0; i < 10; i++)
   {
-    wait(100);  //wait for 100 milliseconds
+    wait(1000);  //wait for 100 milliseconds
     tcputs("TICK\n",COLOR_WHITE);
   }
 }
@@ -224,7 +224,7 @@ NODE* findCommand(char* command)
       {
         if (current->c3 == command[2])
         {
-          if (current->len == (strlen(command)-1))
+          if (current->len == (strlen(command)))
           {
             return current;
           }
@@ -251,7 +251,7 @@ void runShell(char* command)
 void waitCmd()
 {
   char* cmd;
-  scanf(cmd);
+  gets(cmd);
   putchar('\n');
   puts(cmd);
   runShell(cmd);

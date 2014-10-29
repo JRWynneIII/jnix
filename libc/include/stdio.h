@@ -10,7 +10,7 @@ extern "C" {
 int printf(const char* __restrict, ...);
 int putchar(int);
 int puts(const char*);
-void scanf(char*);
+void gets(char*);
  
 #ifdef __cplusplus
 }

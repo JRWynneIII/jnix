@@ -21,7 +21,7 @@ void set_Interval(int hertz)
 
 void timer_install()
 {
-  set_Interval(100);
+  set_Interval(1000);
   irq_install_handler(0,timer_handler);
 }
 

@@ -1,10 +1,8 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-void keyboard_handler(struct regs *r);
+void keyboard_handler();
 
-extern char keyBuf;
-
-extern uint16_t keyboard_isEnter;
+extern unsigned char keyBuf;
 
 #endif
