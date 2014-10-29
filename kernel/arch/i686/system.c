@@ -24,25 +24,6 @@ unsigned short *memsetw(unsigned short *dest, unsigned short val, size_t count)
     for( ; count != 0; count--) *temp++ = val;
     return dest;
 }
-/*unsigned char *memset(unsigned char *dest, unsigned char val, int count)
-{
-	char* temp = (char *)dest;
-	while (count !=0)
-	{
-		*temp++ = val;
-	}
-	return dest;
-}*/
-
-//unsigned short *memsetw(unsigned short *dest, unsigned short val, int count)
-//{
-//	unsigned short* temp = (unsigned short *)dest;
-//	while (count !=0)
-//	{
-//		*temp++ = val;
-//	}
-//	return dest;
-//}
 
 size_t strlen(const char* str)
 {
@@ -59,8 +40,19 @@ unsigned char inportb (unsigned short _port)
     return rv;
 }
 
+unsigned char inb(unsigned short _port)
+{
+  inportb(_port);
+}
+
 void outportb (unsigned short _port, unsigned char _data)
 {
     __asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
 }
+
+void outb(unsigned short _port, unsigned char _data)
+{
+  outportb(_port,_data);
+}
+
 
