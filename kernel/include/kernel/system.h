@@ -3,6 +3,8 @@
 
 #include "vga.h"
 
+void printPrettyTime();
+
 void runShell(char* command);
 
 void* malloc(size_t size);
@@ -54,6 +56,8 @@ void irq_install_handler(int irq, void (*handler)(struct regs *r));
 void irq_uninstall_handler(int irq);
 void install_irq();
 void init_shell();
+unsigned char inb(unsigned short _port);
+void outb(unsigned short _port, unsigned char _data);
 
 
 #endif
