@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <kernel/system.h>
+#include <kernel/pci.h>
 
 /* Check if the compiler thinks if we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -20,11 +21,12 @@ void kernel_main()
 	isrs_install();
 	tcputs("Remapping the PIC and setting up IRQs...\n\n",COLOR_WHITE);
 	install_irq();
-  tcputs("Installing Timer ISR....\n\n\n",COLOR_WHITE);
-  timer_install();
+        tcputs("Installing Timer ISR....\n\n\n",COLOR_WHITE);
+ 	timer_install();
+	tcputs("Checking PCI device vendors....\n",COLOR_WHITE);
+	init_PCI();
 	tcputs("Starting shell....\n\n\n",COLOR_WHITE);
 	init_shell();
-  __asm__ ("hlt");
 
 	for (;;);
 }

@@ -9,6 +9,10 @@ void* malloc(size_t size);
 
 void outportb (unsigned short _port, unsigned char _data);
 
+unsigned char inl(unsigned short _port);
+
+void outl(unsigned short _port, unsigned char _data);
+
 void wait(int ticks);
 
 static inline void io_wait(void)
