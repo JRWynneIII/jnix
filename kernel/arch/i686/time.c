@@ -39,7 +39,7 @@ uint8_t checkStatus()
 {
   outb(0x70,NMI_ENABLE<<7|0x0A);
   uint8_t rtcUpdateStatus = inb(0x71);
-  if (((rtcUpdateStatus >> 7)&0x01))
+  if ((rtcUpdateStatus & 0x80) != 0)
     return true;
   else
     return false; 
@@ -47,13 +47,13 @@ uint8_t checkStatus()
 
 int8_t getSeconds()
 {
-retry:
+//retry:
   while(!checkStatus())
   {}
   outb(0x70,NMI_ENABLE<<7|0x00);
   int8_t sec = inb(0x71);
-  if (sec >=60)
-    goto retry;
+  //if (sec >=60)
+    //goto retry;
   return sec;
 }
 
