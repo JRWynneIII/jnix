@@ -27,7 +27,13 @@ NODE mallocTest;
 NODE itoaTest;
 NODE cmdForth;
 NODE cmdTestTimer;
-int numOfCmds = 8;
+NODE clear;
+int numOfCmds = 9;
+
+void clearCmd()
+{
+  cls();
+}
 
 void initForth()
 {
@@ -113,7 +119,7 @@ void run()
 
 void time()
 {
-  tcputs("Time\n", COLOR_WHITE);
+  printPrettyTime();
 }
 
 void help()
@@ -208,7 +214,15 @@ void populateCommands()
   cmdTestTimer.c1 = 't';
   cmdTestTimer.c2 = 'e';
   cmdTestTimer.c3 = 's';
-  cmdTestTimer.next = NULL;
+  cmdTestTimer.next = &clear;
+
+  clear.cmd = &clearCmd;
+  clear.name = "clear";
+  clear.len = 5;
+  clear.c1 = 'c';
+  clear.c2 = 'l';
+  clear.c3 = 'e';
+  clear.next = NULL;
 }
 
 NODE* findCommand(char* command)
@@ -253,7 +267,6 @@ void waitCmd()
   char* cmd;
   gets(cmd);
   putchar('\n');
-  puts(cmd);
   runShell(cmd);
 }
 
