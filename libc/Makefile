@@ -83,7 +83,7 @@ install: install-headers install-libs
  
 install-headers:
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
-	cp -RTv include $(DESTDIR)$(INCLUDEDIR)
+	cp -Rv include/* $(DESTDIR)$(INCLUDEDIR)
  
 install-libs: $(BINARIES)
 	mkdir -p $(DESTDIR)$(LIBDIR)
