@@ -10,6 +10,7 @@ unsigned char* freeBottom = (unsigned char*)0x01000000;
 void* allocate_bytes(size_t size)
 {
   //this increments the bottom of the freespace by 'size' bytes. Because a char is a byte
+  size = size/32;
   freeBottom = freeBottom + size;
   if (freeBottom >= mallocTop)
     return 0;
