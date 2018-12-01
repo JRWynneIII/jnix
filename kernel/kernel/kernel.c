@@ -23,8 +23,8 @@ void kernel_main()
 	install_irq();
         tcputs("Installing Timer ISR....\n\n\n",COLOR_WHITE);
  	timer_install();
-	tcputs("Checking PCI device vendors....\n",COLOR_WHITE);
-	init_PCI();
+//	tcputs("Checking PCI device vendors....\n",COLOR_WHITE);
+//	init_PCI();
 	tcputs("Starting shell....\n\n\n",COLOR_WHITE);
 	init_shell();
 
