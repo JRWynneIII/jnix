@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <kernel/system.h>
 #include <kernel/keyboard.h>
-#include <kernel/pci.h>
+#include <kernel/ata.h>
 
 //Ports
 #define PIO_IO_BASE_PORT 0x1F0
@@ -22,7 +22,7 @@
 #define PIO_CYLINDER_LOW_REGISTER PIO_IO_BASE_PORT + 4
 #define PIO_LBA_MID PIO_IO_BASE_PORT + 4
 #define PIO_CYLINDER_HIGH_REGISTER PIO_IO_BASE_PORT + 5
-#define PIO_LBA_MID PIO_IO_BASE_PORT + 5
+#define PIO_LBA_HI PIO_IO_BASE_PORT + 5
 #define PIO_DRIVE_HEAD_REGISTER PIO_IO_BASE_PORT + 6
 #define PIO_STATUS_REGISTER PIO_IO_BASE_PORT + 7
 #define PIO_COMMAND_REGISTER PIO_IO_BASE_PORT + 7
@@ -40,7 +40,7 @@
 #define PIO_SECONDARY_CYLINDER_LOW_REGISTER PIO_ALT_IO_BASE_PORT + 4
 #define PIO_SECONDARY_LBA_MID PIO_ALT_IO_BASE_PORT + 4
 #define PIO_SECONDARY_CYLINDER_HIGH_REGISTER PIO_ALT_IO_BASE_PORT + 5
-#define PIO_SECONDARY_LBA_MID PIO_ALT_IO_BASE_PORT + 5
+#define PIO_SECONDARY_LBA_HI PIO_ALT_IO_BASE_PORT + 5
 #define PIO_SECONDARY_DRIVE_HEAD_REGISTER PIO_ALT_IO_BASE_PORT + 6
 #define PIO_SECONDARY_STATUS_REGISTER PIO_ALT_IO_BASE_PORT + 7
 #define PIO_SECONDARY_COMMAND_REGISTER PIO_ALT_IO_BASE_PORT + 7
@@ -71,15 +71,15 @@ char ata_read_status() {
 }
 
 char ata_identify() {
-	outb('0xA0', PIO_DRIVE_ADDRESS_REGISTER);
-	outb('0xB0', PIO_DRIVE_ADDRESS_REGISTER); //If slave on this port
+	outb(0xA0, PIO_DRIVE_ADDRESS_REGISTER);
+	outb(0xB0, PIO_DRIVE_ADDRESS_REGISTER); //If slave on this port
 
-	outb('0x00', PIO_SECTOR_COUNT_REGISTER);
-	outb('0x00', PIO_LBA_LO);
-	outb('0x00', PIO_LBA_MID);
-	outb('0x00', PIO_LBA_HI);
+	outb(0x00, PIO_SECTOR_COUNT_REGISTER);
+	outb(0x00, PIO_LBA_LO);
+	outb(0x00, PIO_LBA_MID);
+	outb(0x00, PIO_LBA_HI);
 	
-	outb('0xEC', PIO_COMMAND_REGISTER);
+	outb(0xEC, PIO_COMMAND_REGISTER);
 	
 	char status = ata_read_status();
 
@@ -109,3 +109,9 @@ char ata_identify() {
 
 }
 
+char ATA_Init() {
+	char exists_floating_drives = ata_floating_bus_check(PIO_STATUS_REGISTER);
+	char exists_floating_secondary_drives = ata_floating_bus_check(PIO_SECONDARY_STATUS_REGISTER);
+
+	ata_identify();
+}

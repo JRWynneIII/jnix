@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <kernel/system.h>
 #include <kernel/pci.h>
+#include <kernel/ata.h>
 
 /* Check if the compiler thinks if we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -21,6 +22,9 @@ void kernel_main()
 	isrs_install();
 	tcputs("Remapping the PIC and setting up IRQs...\n\n",COLOR_WHITE);
 	install_irq();
+	tcputs("Identifying ATA drives.....\n\n", COLOR_WHITE);
+	ATA_Init();
+	tcputs(DRIVE_DATA, COLOR_WHITE);
         tcputs("Installing Timer ISR....\n\n\n",COLOR_WHITE);
  	timer_install();
 //	tcputs("Checking PCI device vendors....\n",COLOR_WHITE);
