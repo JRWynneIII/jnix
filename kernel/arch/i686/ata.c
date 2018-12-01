@@ -113,5 +113,8 @@ char ATA_Init() {
 	char exists_floating_drives = ata_floating_bus_check(PIO_STATUS_REGISTER);
 	char exists_floating_secondary_drives = ata_floating_bus_check(PIO_SECONDARY_STATUS_REGISTER);
 
+	if (exists_floating_drives == 0 && exists_floating_secondary_drives == 0)
+		tcputs("No drives detected", COLOR_WHITE);
+
 	ata_identify();
 }

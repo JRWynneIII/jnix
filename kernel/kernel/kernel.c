@@ -13,23 +13,23 @@
 void kernel_main()
 {
 	terminal_initialize();
-	tcputs("Initilizing VGA Driver....\n\n",COLOR_WHITE);
-	tcputs("Installing Global Descriptor Table....\n\n",COLOR_WHITE);
+	tcputs("Initilizing VGA Driver....\n",COLOR_WHITE);
+	tcputs("Installing Global Descriptor Table....\n",COLOR_WHITE);
 	gdt_install();
-	tcputs("Installing Interrupt Descriptor Table....\n\n",COLOR_WHITE);
+	tcputs("Installing Interrupt Descriptor Table....\n",COLOR_WHITE);
 	idt_install();
-	tcputs("Setting up ISRs...\n\n",COLOR_WHITE);
+	tcputs("Setting up ISRs...\n",COLOR_WHITE);
 	isrs_install();
-	tcputs("Remapping the PIC and setting up IRQs...\n\n",COLOR_WHITE);
+	tcputs("Remapping the PIC and setting up IRQs...\n",COLOR_WHITE);
 	install_irq();
-	tcputs("Identifying ATA drives.....\n\n", COLOR_WHITE);
+	tcputs("Identifying ATA drives.....\n", COLOR_WHITE);
 	ATA_Init();
 	tcputs(DRIVE_DATA, COLOR_WHITE);
-        tcputs("Installing Timer ISR....\n\n\n",COLOR_WHITE);
+        tcputs("Installing Timer ISR....\n",COLOR_WHITE);
  	timer_install();
 //	tcputs("Checking PCI device vendors....\n",COLOR_WHITE);
 //	init_PCI();
-	tcputs("Starting shell....\n\n\n",COLOR_WHITE);
+	tcputs("Starting shell....\n",COLOR_WHITE);
 	init_shell();
 
 	for (;;);
