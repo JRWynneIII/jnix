@@ -49,12 +49,10 @@
 #define PIO_SECONDARY_DRIVE_ADDRESS_REGISTER PIO_ALT_CONTROL_BASE_PORT + 1
 
 // If the bus is floating then no disks exist or forgot to flush the cache
-bool floating_bus_check()
+bool floating_bus_check(char reg)
 {
-	//Bad idea. Probably should break out into individual checks
-	uint16_t status = inb(PIO_STATUS_REGISTER);
-	uint16_t secondary_status = inb(PIO_SECONDARY_STATUS_REGISTER);
-	if (status && secondary_status == 0xFF)
+	uint16_t status = inb(reg);
+	if (status == 0xFF)
 		return true;
 	else
 		return false;
