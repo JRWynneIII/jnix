@@ -15,7 +15,7 @@ BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
  
 CFLAGS:=$(CFLAGS) -ffreestanding -fno-builtin -Wall -Wextra
-CPPFLAGS:=$(CPPFLAGS) -D__is_jforth_kernel -Iinclude -I../sysroot/usr/include
+CPPFLAGS:=$(CPPFLAGS) -D__is_jnix_kernel -Iinclude -I../sysroot/usr/include
 LDFLAGS:=$(LDFLAGS) -L../sysroot/usr/lib
 LIBS:=$(LIBS) -nostdlib -lgcc -lk
  
@@ -50,11 +50,11 @@ $(CRTEND_OBJ) \
 $(CRTN_OBJ) \
  
 
-all: jforth.kernel
+all: jnix.kernel
  
 .PHONY: all clean install install-headers install-kernel
  
-jforth.kernel: $(OBJ_LINK_LIST) $(ARCHDIR)/linker.ld
+jnix.kernel: $(OBJ_LINK_LIST) $(ARCHDIR)/linker.ld
 	LD_LIBRARY_PATH=../sysroot/usr/lib $(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(OBJ_LINK_LIST) $(LDFLAGS) $(LIBS)
  
 %.o: %.c
@@ -64,7 +64,7 @@ jforth.kernel: $(OBJ_LINK_LIST) $(ARCHDIR)/linker.ld
 	$(AS) -c $< -o $@ 
  
 clean:
-	rm -f jforth.kernel $(OBJS) $(ALL_OUR_OBJS) *.o */*.o */*/*.o
+	rm -f jnix.kernel $(OBJS) $(ALL_OUR_OBJS) *.o */*.o */*/*.o
  
 install: install-headers install-kernel
  
@@ -72,6 +72,6 @@ install-headers:
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
 	cp -Rv include/* $(DESTDIR)$(INCLUDEDIR)
  
-install-kernel: jforth.kernel
+install-kernel: jnix.kernel
 	mkdir -p $(DESTDIR)$(BOOTDIR)
-	cp jforth.kernel $(DESTDIR)$(BOOTDIR)
+	cp jnix.kernel $(DESTDIR)$(BOOTDIR)

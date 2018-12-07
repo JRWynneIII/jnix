@@ -38,18 +38,18 @@ void clearCmd()
 
 void initForth()
 {
-  tcputs("ok\n", COLOR_WHITE);
+  printk("ok\n", COLOR_WHITE);
   for(;;);
 }
 
 void testTimer()
 {
-  tcputs("Testing Timer....\n",COLOR_WHITE);
+  printk("Testing Timer....\n",COLOR_WHITE);
   int i = 0;
   for (i = 0; i < 10; i++)
   {
     wait(1000);  //wait for 100 milliseconds
-    tcputs("TICK\n",COLOR_WHITE);
+    printk("TICK\n",COLOR_WHITE);
   }
 }
 
@@ -65,7 +65,7 @@ void itoaTestCmd()
 
 void mallocTestCmd()
 {
-  tcputs("MallocTest\n", COLOR_WHITE);
+  printk("MallocTest\n", COLOR_WHITE);
   int* testArray = (int*)malloc(5*sizeof(int));
   int test[5] = {1,2,3,4,5};
 
@@ -82,23 +82,23 @@ void mallocTestCmd()
   if (testArray[0] == 10)
     tputs("\tPASS\n");
   else
-    tcputs("\tFAIL\n", COLOR_RED);
+    printk("\tFAIL\n", COLOR_RED);
   if (testArray[1] == 22)
     tputs("\tPASS\n");
   else
-    tcputs("\tFAIL\n", COLOR_RED);
+    printk("\tFAIL\n", COLOR_RED);
   if (testArray[2] == 33)
     tputs("\tPASS\n");
   else
-    tcputs("\tFAIL\n", COLOR_RED);
+    printk("\tFAIL\n", COLOR_RED);
   if (testArray[3] == 45)
     tputs("\tPASS\n");
   else
-    tcputs("\tFAIL\n", COLOR_RED);
+    printk("\tFAIL\n", COLOR_RED);
   if (testArray[4] == 56)
     tputs("\tPASS\n");
   else
-    tcputs("\tFAIL\n", COLOR_RED);
+    printk("\tFAIL\n", COLOR_RED);
   int* test2 = (int*)malloc(100*sizeof(int));
   int i = 0;
   for (i = 0; i<100; i++)
@@ -115,7 +115,7 @@ void mallocTestCmd()
 
 void run()
 {
-  tcputs("Running...\n",COLOR_WHITE);
+  printk("Running...\n",COLOR_WHITE);
 }
 
 void time()
@@ -125,11 +125,11 @@ void time()
 
 void help()
 {
-  tcputs("Availible Commands:\n",COLOR_WHITE);
+  printk("Availible Commands:\n",COLOR_WHITE);
   NODE* current = &head;
   for (int i = 0; i < numOfCmds; i++)
   {
-    tcputs(current->name, COLOR_WHITE);
+    printk(current->name, COLOR_WHITE);
     tputs("\n");
     current = current->next;  
   }
@@ -137,7 +137,7 @@ void help()
 
 void info()
 {
-  tcputs("HobbyOS\nCopyright GPUJake 2014\n", COLOR_WHITE);
+  printk("HobbyOS\nCopyright GPUJake 2014\n", COLOR_WHITE);
 }
 
 void getCmdCount()
@@ -248,7 +248,7 @@ NODE* findCommand(char* command)
     }
     current = current->next;
   }
-  tcputs("ERROR COMMAND NOT FOUND\n", COLOR_RED);
+  printk("ERROR COMMAND NOT FOUND\n", COLOR_RED);
   return NULL;
 }
 
@@ -259,7 +259,7 @@ void runShell(char* command)
   cmd = findCommand(command);
   if (cmd)
     cmd->cmd();
-  tcputs("$>> ", COLOR_GREEN);
+  printk("$>> ", COLOR_GREEN);
   waitCmd();
 }
 
@@ -275,7 +275,7 @@ void init_shell()
 {
   getCmdCount();
   populateCommands();
-  tcputs("$>> ", COLOR_GREEN);
+  printk("$>> ", COLOR_GREEN);
   irq_install_handler(1, keyboard_handler);
   waitCmd();
 }

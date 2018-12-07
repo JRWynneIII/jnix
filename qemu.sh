@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
 SYSROOT=sysroot/
-qemu-system-i386 -net nic,model=rtl8139 -vga cirrus -kernel $SYSROOT/boot/jforth.kernel
+qemu-system-i386 -drive if=floppy,index=0,media=disk,file=harddrive -vga cirrus -cdrom jnix.iso
+

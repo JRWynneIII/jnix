@@ -37,7 +37,7 @@ void terminal_putchar(char c);
 
 void tputs(const char* data);
 
-void tcputs(const char* data, uint8_t color);
+void printk(const char* data, uint8_t color);
 
 void cls();
 

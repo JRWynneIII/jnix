@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <kernel/system.h>
 #include <kernel/pci.h>
+#include <kernel/ata.h>
 
 /* Check if the compiler thinks if we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -12,20 +13,24 @@
 void kernel_main()
 {
 	terminal_initialize();
-	tcputs("Initilizing VGA Driver....\n\n",COLOR_WHITE);
-	tcputs("Installing Global Descriptor Table....\n\n",COLOR_WHITE);
+	printk("Initilizing VGA Driver....\n",COLOR_WHITE);
+	printk("Installing Global Descriptor Table....\n",COLOR_WHITE);
 	gdt_install();
-	tcputs("Installing Interrupt Descriptor Table....\n\n",COLOR_WHITE);
+	printk("Installing Interrupt Descriptor Table....\n",COLOR_WHITE);
 	idt_install();
-	tcputs("Setting up ISRs...\n\n",COLOR_WHITE);
+	printk("Setting up ISRs...\n",COLOR_WHITE);
 	isrs_install();
-	tcputs("Remapping the PIC and setting up IRQs...\n\n",COLOR_WHITE);
+	printk("Remapping the PIC and setting up IRQs...\n",COLOR_WHITE);
 	install_irq();
-        tcputs("Installing Timer ISR....\n\n\n",COLOR_WHITE);
+	printk("Identifying ATA drives.....\n", COLOR_WHITE);
+	ATA_Init();
+	printk(DRIVE_DATA, COLOR_WHITE);
+        printk("Installing Timer ISR....\n",COLOR_WHITE);
  	timer_install();
-//	tcputs("Checking PCI device vendors....\n",COLOR_WHITE);
+//	printk("Checking PCI device vendors....\n",COLOR_WHITE);
 //	init_PCI();
-	tcputs("Starting shell....\n\n\n",COLOR_WHITE);
+	printk("Starting shell....\n",COLOR_WHITE);
+
 	init_shell();
 
 	for (;;);
