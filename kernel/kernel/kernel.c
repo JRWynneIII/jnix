@@ -4,6 +4,7 @@
 #include <kernel/system.h>
 #include <kernel/pci.h>
 #include <kernel/ata.h>
+#include <kernel/cpuid.h>
 
 /* Check if the compiler thinks if we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -13,6 +14,10 @@
 void kernel_main()
 {
 	terminal_initialize();
+	printk("Identifying CPU...", COLOR_WHITE);
+	cpuid_t cpu_data = get_cpuid();
+	printk(itoa(cpu_data.eax), COLOR_WHITE);
+	printk("\n", COLOR_WHITE);
 	printk("Initilizing VGA Driver....\n",COLOR_WHITE);
 	printk("Installing Global Descriptor Table....\n",COLOR_WHITE);
 	gdt_install();
