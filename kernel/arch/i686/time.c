@@ -80,10 +80,10 @@ int8_t getHours()
 
 void printPrettyTime()
 {
-  tcputs(itoa(getHours()),COLOR_WHITE);
-  tcputs(":",COLOR_WHITE);
-  tcputs(itoa(getMinutes()),COLOR_WHITE);
-  tcputs(":",COLOR_WHITE);
-  tcputs(itoa(getSeconds()),COLOR_WHITE);
+  printk(itoa(getHours()),COLOR_WHITE);
+  printk(":",COLOR_WHITE);
+  printk(itoa(getMinutes()),COLOR_WHITE);
+  printk(":",COLOR_WHITE);
+  printk(itoa(getSeconds()),COLOR_WHITE);
   tputs("\n");
 }

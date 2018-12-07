@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
  
-#if defined(__is_jforth_kernel)
+#if defined(__is_jnix_kernel)
 #include <kernel/tty.h>
 #endif
  

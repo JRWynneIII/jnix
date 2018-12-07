@@ -13,40 +13,40 @@
 #define PIO_ALT_CONTROL_BASE_PORT 0x376
 
 //Registers
-#define PIO_DATA_REGISTER PIO_IO_BASE_PORT + 0
-#define PIO_ERROR_REGISTER PIO_IO_BASE_PORT + 1
-#define PIO_FEATURES_REGISTER PIO_IO_BASE_PORT + 1
-#define PIO_SECTOR_COUNT_REGISTER PIO_IO_BASE_PORT + 2
-#define PIO_SECTOR_NUMBER_REGISTER PIO_IO_BASE_PORT + 3
-#define PIO_LBA_LO PIO_IO_BASE_PORT + 3
-#define PIO_CYLINDER_LOW_REGISTER PIO_IO_BASE_PORT + 4
-#define PIO_LBA_MID PIO_IO_BASE_PORT + 4
-#define PIO_CYLINDER_HIGH_REGISTER PIO_IO_BASE_PORT + 5
-#define PIO_LBA_HI PIO_IO_BASE_PORT + 5
-#define PIO_DRIVE_HEAD_REGISTER PIO_IO_BASE_PORT + 6
-#define PIO_STATUS_REGISTER PIO_IO_BASE_PORT + 7
-#define PIO_COMMAND_REGISTER PIO_IO_BASE_PORT + 7
-#define PIO_ALT_STATUS_REGISTER PIO_CONTROL_BASE_PORT + 0
-#define PIO_DEVICE_CONTROL_REGISTER PIO_CONTROL_BASE_PORT + 0
-#define PIO_DRIVE_ADDRESS_REGISTER PIO_CONTROL_BASE_PORT + 1
+#define PIO_DATA_REGISTER PIO_IO_BASE_PORT + 0x00
+#define PIO_ERROR_REGISTER PIO_IO_BASE_PORT + 0x01
+#define PIO_FEATURES_REGISTER PIO_IO_BASE_PORT + 0x01
+#define PIO_SECTOR_COUNT_REGISTER PIO_IO_BASE_PORT + 0x02
+#define PIO_SECTOR_NUMBER_REGISTER PIO_IO_BASE_PORT + 0x03
+#define PIO_LBA_LO PIO_IO_BASE_PORT + 0x03
+#define PIO_CYLINDER_LOW_REGISTER PIO_IO_BASE_PORT + 0x04
+#define PIO_LBA_MID PIO_IO_BASE_PORT + 0x04
+#define PIO_CYLINDER_HIGH_REGISTER PIO_IO_BASE_PORT + 0x05
+#define PIO_LBA_HI PIO_IO_BASE_PORT + 0x05
+#define PIO_DRIVE_HEAD_REGISTER PIO_IO_BASE_PORT + 0x06
+#define PIO_STATUS_REGISTER PIO_IO_BASE_PORT + 0x07
+#define PIO_COMMAND_REGISTER PIO_IO_BASE_PORT + 0x07
+#define PIO_ALT_STATUS_REGISTER PIO_CONTROL_BASE_PORT + 0x00
+#define PIO_DEVICE_CONTROL_REGISTER PIO_CONTROL_BASE_PORT + 0x00
+#define PIO_DRIVE_ADDRESS_REGISTER PIO_CONTROL_BASE_PORT + 0x01
 
 // Secondary registers
-#define PIO_SECONDARY_DATA_REGISTER PIO_ALT_IO_BASE_PORT + 0
-#define PIO_SECONDARY_ERROR_REGISTER PIO_ALT_IO_BASE_PORT + 1
-#define PIO_SECONDARY_FEATURES_REGISTER PIO_ALT_IO_BASE_PORT + 1
-#define PIO_SECONDARY_SECTOR_COUNT_REGISTER PIO_ALT_IO_BASE_PORT + 2
-#define PIO_SECONDARY_SECTOR_NUMBER_REGISTER PIO_ALT_IO_BASE_PORT + 3
-#define PIO_SECONDARY_LBA_LO PIO_ALT_IO_BASE_PORT + 3
-#define PIO_SECONDARY_CYLINDER_LOW_REGISTER PIO_ALT_IO_BASE_PORT + 4
-#define PIO_SECONDARY_LBA_MID PIO_ALT_IO_BASE_PORT + 4
-#define PIO_SECONDARY_CYLINDER_HIGH_REGISTER PIO_ALT_IO_BASE_PORT + 5
-#define PIO_SECONDARY_LBA_HI PIO_ALT_IO_BASE_PORT + 5
-#define PIO_SECONDARY_DRIVE_HEAD_REGISTER PIO_ALT_IO_BASE_PORT + 6
-#define PIO_SECONDARY_STATUS_REGISTER PIO_ALT_IO_BASE_PORT + 7
-#define PIO_SECONDARY_COMMAND_REGISTER PIO_ALT_IO_BASE_PORT + 7
-#define PIO_SECONDARY_ALT_STATUS_REGISTER PIO_ALT_CONTROL_BASE_PORT + 0
-#define PIO_SECONDARY_DEVICE_CONTROL_REGISTER PIO_ALT_CONTROL_BASE_PORT + 0
-#define PIO_SECONDARY_DRIVE_ADDRESS_REGISTER PIO_ALT_CONTROL_BASE_PORT + 1
+#define PIO_SECONDARY_DATA_REGISTER PIO_ALT_IO_BASE_PORT + 0x00
+#define PIO_SECONDARY_ERROR_REGISTER PIO_ALT_IO_BASE_PORT + 0x01
+#define PIO_SECONDARY_FEATURES_REGISTER PIO_ALT_IO_BASE_PORT + 0x01
+#define PIO_SECONDARY_SECTOR_COUNT_REGISTER PIO_ALT_IO_BASE_PORT + 0x02
+#define PIO_SECONDARY_SECTOR_NUMBER_REGISTER PIO_ALT_IO_BASE_PORT + 0x03
+#define PIO_SECONDARY_LBA_LO PIO_ALT_IO_BASE_PORT + 0x03
+#define PIO_SECONDARY_CYLINDER_LOW_REGISTER PIO_ALT_IO_BASE_PORT + 0x04
+#define PIO_SECONDARY_LBA_MID PIO_ALT_IO_BASE_PORT + 0x04
+#define PIO_SECONDARY_CYLINDER_HIGH_REGISTER PIO_ALT_IO_BASE_PORT + 0x05
+#define PIO_SECONDARY_LBA_HI PIO_ALT_IO_BASE_PORT + 0x05
+#define PIO_SECONDARY_DRIVE_HEAD_REGISTER PIO_ALT_IO_BASE_PORT + 0x06
+#define PIO_SECONDARY_STATUS_REGISTER PIO_ALT_IO_BASE_PORT + 0x07
+#define PIO_SECONDARY_COMMAND_REGISTER PIO_ALT_IO_BASE_PORT + 0x07
+#define PIO_SECONDARY_ALT_STATUS_REGISTER PIO_ALT_CONTROL_BASE_PORT + 0x00
+#define PIO_SECONDARY_DEVICE_CONTROL_REGISTER PIO_ALT_CONTROL_BASE_PORT + 0x00
+#define PIO_SECONDARY_DRIVE_ADDRESS_REGISTER PIO_ALT_CONTROL_BASE_PORT + 0x01
 
 //Hacky/bad. Fix this TODO
 uint16_t DRIVE_DATA[256];
@@ -66,7 +66,7 @@ char ata_read_status() {
 	// NOTE: Must read from the status port 5 times to introduce a 400ns
 	// delay. The values before then will be possibly incorrect
 	for (int i = 0; i < 5; i++)
-		output = inb(PIO_STATUS_REGISTER);
+		output = inb(PIO_SECONDARY_STATUS_REGISTER);
 	return output;
 }
 
@@ -82,39 +82,83 @@ char ata_identify() {
 	outb(0xEC, PIO_COMMAND_REGISTER);
 	
 	char status = ata_read_status();
+	unsigned low = inb(PIO_LBA_LO);
+	unsigned hi = inb(PIO_LBA_HI);
 
-	if (status != 0) {
-		char cur = inb(PIO_STATUS_REGISTER);
-		while((1 << 7) & cur) { //Poll the status port until BSY (7th bit) is unset
-			cur = inb(PIO_STATUS_REGISTER);
-		}
+	if (low == 0x14 && hi == 0xEB)
+		printk("PATAPI Device detected\n", COLOR_WHITE);
+	if (low == 0x69 && hi == 0x96)
+		printk("SATAPI Device detected\n", COLOR_WHITE);
+	if (low == 0 && hi == 0)
+		printk("PATA Device detected\n", COLOR_WHITE);
+	if (low == 0x3c && hi == 0xc3)
+		printk("SATA Device detected\n", COLOR_WHITE);
 
-		char lba_mid = inb(PIO_LBA_MID);
-		char lba_hi = inb(PIO_LBA_HI);
-
-		// If drive is an ATA drive, then both lba_mid and lba_hi are 0
-		if (lba_mid == 0 && lba_hi == 0) {
-			while(!((1 << 3) & cur)) { 
-				cur = inb(PIO_STATUS_REGISTER);
-				if ((1 << 0) & cur) //If ERR bit is set
-					return; //TODO: DO SOMETHING HERE
-			}
-			
-			// Read 256 16-bit values from the data port
-			for(int i = 0; i < 256; i++)
-				DRIVE_DATA[i] = inb(PIO_DATA_REGISTER);
-		}
-
-	}
-
+//	if (status != 0) {
+//		char cur = inb(PIO_STATUS_REGISTER);
+//		while((1 << 7) & cur) { //Poll the status port until BSY (7th bit) is unset
+//			cur = inb(PIO_STATUS_REGISTER);
+//		}
+//
+//		char lba_mid = inb(PIO_LBA_MID);
+//		char lba_hi = inb(PIO_LBA_HI);
+//		//Debug:
+//		printk(itoa(lba_mid), COLOR_RED);
+//		printk('\n', COLOR_RED);
+//		printk(itoa(lba_hi), COLOR_RED);
+//		printk('\n', COLOR_RED);
+//
+//		// If drive is an ATA drive, then both lba_mid and lba_hi are 0
+//		if (lba_mid == 0 && lba_hi == 0) {
+//			while(!((1 << 3) & cur)) { 
+//				cur = inb(PIO_STATUS_REGISTER);
+//				if ((1 << 0) & cur) //If ERR bit is set
+//					printk("ERROR BIT SET", COLOR_RED);
+//					return; //TODO: DO SOMETHING HERE
+//			}
+//			
+//			// Read 256 16-bit values from the data port
+//			for(int i = 0; i < 256; i++)
+//				DRIVE_DATA[i] = inb(PIO_DATA_REGISTER);
+//		}
+//
+//	}
+//	else { //Might be ATAPI, which doesn't respond to IDENTIFY
+//		char cur = inb(PIO_STATUS_REGISTER);
+//		printk(itoa(cur), COLOR_GREEN);
+//		while((1 << 7) & cur) { //Poll the status port until BSY (7th bit) is unset
+//			cur = inb(PIO_STATUS_REGISTER);
+//		}
+//
+//		char lba_mid = inb(PIO_LBA_MID);
+//		char lba_hi = inb(PIO_LBA_HI);
+//		//Debug:
+//		printk("Testing for ATAPI drives...\n", COLOR_RED);
+//
+//		// If drive is an ATA drive, then both lba_mid and lba_hi are 0
+//		if (lba_mid == 0 && lba_hi == 0) {
+//			while(!((1 << 3) & cur)) { 
+//				cur = inb(PIO_STATUS_REGISTER);
+//				if ((1 << 0) & cur) //If ERR bit is set
+//					printk("ERROR BIT SET", COLOR_RED);
+//					return; //TODO: DO SOMETHING HERE
+//			}
+//			
+//			// Read 256 16-bit values from the data port
+//			for(int i = 0; i < 256; i++)
+//				DRIVE_DATA[i] = inb(PIO_DATA_REGISTER);
+//		}
+//	}
 }
 
 char ATA_Init() {
 	char exists_floating_drives = ata_floating_bus_check(PIO_STATUS_REGISTER);
 	char exists_floating_secondary_drives = ata_floating_bus_check(PIO_SECONDARY_STATUS_REGISTER);
 
-	if (exists_floating_drives == 0 && exists_floating_secondary_drives == 0)
-		tcputs("No drives detected", COLOR_WHITE);
+	if (exists_floating_drives == 0)
+		printk("No primary drives detected", COLOR_WHITE);
+	else if ( exists_floating_secondary_drives == 0)
+		printk("No secondary drives detected", COLOR_WHITE);
 
 	ata_identify();
 }

@@ -113,7 +113,7 @@ void terminal_putchar(char c)
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 }
  
-void tcputs(const char* data, uint8_t color)
+void printk(const char* data, uint8_t color)
 {
 	uint8_t old_color = terminal_color;
 	terminal_color = color;

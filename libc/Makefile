@@ -14,9 +14,9 @@ INCLUDEDIR?=$(PREFIX)/include
 LIBDIR?=$(EXEC_PREFIX)/lib
  
 CFLAGS:=$(CFLAGS) -ffreestanding -fno-builtin -Wall -Wextra
-CPPFLAGS:=$(CPPFLAGS) -D__is_jforth_libc -Iinclude -I../sysroot/usr/include
+CPPFLAGS:=$(CPPFLAGS) -D__is_jnix_libc -Iinclude -I../sysroot/usr/include
 LIBK_CFLAGS:=-Wall -Wextra -ffreestanding -fno-builtin
-LIBK_CPPFLAGS:=$(CPPFLAGS) -D__is_jforth_kernel -I../sysroot/usr/include
+LIBK_CPPFLAGS:=$(CPPFLAGS) -D__is_jnix_kernel -I../sysroot/usr/include
  
 ARCHDIR:=arch/$(HOSTARCH)
  
