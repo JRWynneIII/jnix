@@ -30,6 +30,7 @@ void kernel_main()
 //	printk("Checking PCI device vendors....\n",COLOR_WHITE);
 //	init_PCI();
 	printk("Starting shell....\n",COLOR_WHITE);
+
 	init_shell();
 
 	for (;;);

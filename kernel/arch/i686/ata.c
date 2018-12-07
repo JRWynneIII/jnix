@@ -6,6 +6,7 @@
 #include <kernel/keyboard.h>
 #include <kernel/ata.h>
 
+
 //Ports
 #define PIO_IO_BASE_PORT 0x1F0
 #define PIO_CONTROL_BASE_PORT 0x3F6
@@ -162,3 +163,4 @@ char ATA_Init() {
 
 	ata_identify();
 }
+
