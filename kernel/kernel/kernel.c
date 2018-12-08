@@ -16,7 +16,16 @@ void kernel_main()
 	terminal_initialize();
 	printk("Identifying CPU...", COLOR_WHITE);
 	cpuid_t cpu_data = get_cpuid();
-	printk(itoa(cpu_data.eax), COLOR_WHITE);
+	printk(cpu_data.make, COLOR_WHITE);
+	printk("\n", COLOR_WHITE);
+	printk("Type: ", COLOR_WHITE);
+	printk(itoa(cpu_data.family), COLOR_WHITE);
+	printk("\n", COLOR_WHITE);
+	printk("Family: ", COLOR_WHITE);
+	printk(cpu_data.family, COLOR_WHITE);
+	printk("\n", COLOR_WHITE);
+	printk("Model: ", COLOR_WHITE);
+	printk(cpu_data.model, COLOR_WHITE);
 	printk("\n", COLOR_WHITE);
 	printk("Initilizing VGA Driver....\n",COLOR_WHITE);
 	printk("Installing Global Descriptor Table....\n",COLOR_WHITE);
