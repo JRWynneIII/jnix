@@ -5,19 +5,21 @@
 
 unsigned char* mallocBase = (unsigned char*)0x01000000;
 unsigned char* mallocTop = (unsigned char*)0xBFFFFFFF;
-unsigned char* freeBottom = (unsigned char*)0x01000000;
 
 typedef struct kATT_entry {
-	char* phy_addr;
+	unsigned char* phy_addr;
 	size_t size_bytes;
 	struct kATT_entry* next;
 } kATT_entry_t;
 
 //Kernel address translation table
-kATT_entry_t* kATT;
+kATT_entry_t* kATT = NULL;
 
 void* kATT_Init() {
-	kATT_entry_t tail = { mallocBase, 0, NULL };
+	kATT_entry_t tail;
+        tail.phy_addr = mallocBase;
+	tail.size_bytes = 1;
+        tail.next = NULL;
 	kATT = &tail;
 	return kATT;
 }
@@ -28,14 +30,13 @@ void** kmalloc(size_t size) {
 	kATT_entry_t* cur = kATT;
 	
 	// Find last block
-	while(1) {
-		if (cur->next == NULL) 
-			break;
+	while(cur->next != NULL) {
+		printk("next\n", COLOR_WHITE);
 		cur = cur->next;
 	}
 	
-	char* newAddr = cur->phy_addr + (sizeof(char) * cur->size_bytes) + 1;
-	if ((newAddr + (sizeof(char) * size) + 1) >= mallocTop) {
+	unsigned char* newAddr = cur->phy_addr + (sizeof(unsigned char) * cur->size_bytes) + 1;
+	if ((newAddr + (sizeof(unsigned char) * size) + 1) >= mallocTop) {
 		// TODO: Return an OOM error
 		return NULL;
 	}
