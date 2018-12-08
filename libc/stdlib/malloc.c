@@ -10,6 +10,7 @@
 
 void* malloc(size_t size)
 {
-  return allocate_bytes(size); 
+	//TODO: Use a heap in userspace. That way the kernel heap is not same as system
+	return *kmalloc(size); 
 }
 

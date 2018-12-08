@@ -36,6 +36,8 @@ void kernel_main()
 	isrs_install();
 	printk("Remapping the PIC and setting up IRQs...\n",COLOR_WHITE);
 	install_irq();
+	printk("Initializing the Kernel Address Translation Table...\n", COLOR_WHITE);
+	kATT_Init();
 	printk("Identifying ATA drives.....\n", COLOR_WHITE);
 	ATA_Init();
 	printk(DRIVE_DATA, COLOR_WHITE);
