@@ -27,6 +27,8 @@ void kernel_main()
 	printk("Model: ", COLOR_WHITE);
 	printk(cpu_data.model, COLOR_WHITE);
 	printk("\n", COLOR_WHITE);
+	printk("Enabling A20 Line...\n", COLOR_WHITE);
+	enable_a20();
 	printk("Initilizing VGA Driver....\n",COLOR_WHITE);
 	printk("Installing Global Descriptor Table....\n",COLOR_WHITE);
 	gdt_install();

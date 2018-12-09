@@ -13,10 +13,10 @@ typedef struct kATT_entry {
 } kATT_entry_t;
 
 //Kernel address translation table
-kATT_entry_t* kATT = NULL;
+kATT_entry_t* kATT;
 
 void* kATT_Init() {
-	kATT_entry_t tail;
+	static kATT_entry_t tail;
         tail.phy_addr = mallocBase;
 	tail.size_bytes = 1;
         tail.next = NULL;
@@ -25,9 +25,11 @@ void* kATT_Init() {
 }
 
 void** kmalloc(size_t size) {
-	kATT_entry_t newBlock;
-	newBlock.size_bytes = size;
+	static kATT_entry_t newBlock;
 	kATT_entry_t* cur = kATT;
+	printk("kATT->phy_addr = ", COLOR_RED);
+	printk(itoa(kATT->phy_addr), COLOR_RED);
+	printk("\n",COLOR_WHITE);
 	
 	// Find last block
 	while(cur->next != NULL) {

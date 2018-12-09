@@ -383,6 +383,13 @@ irq_common_stub:
 	addl $8,%esp
 	iret
 
+.global enable_a20
+
+enable_a20:
+	in  $0x92, %al
+	or  $2, %al
+	out %al, $0x92
+
 #create the stack
 .section .bootstrap_stack
 stack_bottom:

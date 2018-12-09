@@ -3,6 +3,8 @@
 
 #include "vga.h"
 
+extern void enable_a20();
+
 void printPrettyTime();
 
 void runShell(char* command);
