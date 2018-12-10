@@ -109,7 +109,7 @@ void mallocTestCmd()
  // }
  // tputs(itoa(test2));
  // tputs("\n");
-  tputs(itoa(test));
+  tputs(itoa(*test));
   tputs("\n");
 }
 
@@ -137,7 +137,7 @@ void help()
 
 void info()
 {
-  printk("HobbyOS\nCopyright GPUJake 2014\n", COLOR_WHITE);
+  printk("jnix\nCopyright GPUJake 2014\n", COLOR_WHITE);
 }
 
 void getCmdCount()

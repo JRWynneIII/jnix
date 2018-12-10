@@ -9,44 +9,54 @@ unsigned char* mallocTop = (unsigned char*)0xBFFFFFFF;
 typedef struct kATT_entry {
 	unsigned char* phy_addr;
 	size_t size_bytes;
-	struct kATT_entry* next;
 } kATT_entry_t;
 
 //Kernel address translation table
-kATT_entry_t* kATT;
+kATT_entry_t kATT[64000];
 
 void* kATT_Init() {
-	static kATT_entry_t tail;
-        tail.phy_addr = mallocBase;
-	tail.size_bytes = 1;
-        tail.next = NULL;
-	kATT = &tail;
+	kATT_entry_t head, tail;
+        head.phy_addr = mallocBase;
+	head.size_bytes = 1;
+	tail.phy_addr = NULL;
+	tail.size_bytes = 0;
+	kATT[0] = head;
+	kATT[1] = tail;
 	return kATT;
 }
 
 void** kmalloc(size_t size) {
-	static kATT_entry_t newBlock;
-	kATT_entry_t* cur = kATT;
-	printk("kATT->phy_addr = ", COLOR_RED);
-	printk(itoa(kATT->phy_addr), COLOR_RED);
+	kATT_entry_t newBlock;
+	kATT_entry_t cur = kATT[0];
+
+	printk("kATT.size_bytes = ", COLOR_RED);
+	printk(itoa(cur.size_bytes), COLOR_RED);
 	printk("\n",COLOR_WHITE);
 	
 	// Find last block
-	while(cur->next != NULL) {
-		printk("next\n", COLOR_WHITE);
-		cur = cur->next;
+	int i = 0;
+	while(kATT[i+1].phy_addr != NULL) {
+		printk(itoa(cur.phy_addr), COLOR_WHITE);
+		printk("\n", COLOR_WHITE);
+		cur = kATT[i];
+		i++;
 	}
-	
-	unsigned char* newAddr = cur->phy_addr + (sizeof(unsigned char) * cur->size_bytes) + 1;
+
+	unsigned char* newAddr = (unsigned char*)(cur.phy_addr + (sizeof(unsigned char) * cur.size_bytes) + 1);
 	if ((newAddr + (sizeof(unsigned char) * size) + 1) >= mallocTop) {
-		// TODO: Return an OOM error
+		// TODO: Return an OOM error and/or do compaction
 		return NULL;
 	}
 
+	printk(itoa(newAddr), COLOR_WHITE);
+	printk("\n", COLOR_WHITE);
+
+
 	newBlock.phy_addr = newAddr;
 	newBlock.size_bytes = size;
-	newBlock.next = NULL;
-	cur->next = &newBlock;
-	return &(newBlock.phy_addr);
+	kATT_entry_t tmp = kATT[i+1];
+	kATT[i+1] = newBlock;
+	kATT[i+2] = tmp;
+	return &(kATT[i+1].phy_addr);
 }
 
