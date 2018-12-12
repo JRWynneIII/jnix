@@ -11,7 +11,7 @@ void runShell(char* command);
 
 void** kmalloc(size_t size);
 
-void* kATT_Init();
+void kATT_Init();
 
 void outportb (unsigned short _port, unsigned char _data);
 
