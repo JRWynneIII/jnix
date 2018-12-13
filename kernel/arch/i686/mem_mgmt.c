@@ -29,10 +29,6 @@ void kATT_Init() {
 
 void** kmalloc(size_t size) {
 	kATT_entry_t newBlock;
-	
-	//Debug..
-	printk(itoa(kATT.next), COLOR_RED);
-	printk("\n", COLOR_RED);
 
 	//The table is empty
 	if (kATT.last == NULL) {

@@ -99,16 +99,16 @@ void mallocTestCmd()
     tputs("\tPASS\n");
   else
     printk("\tFAIL\n", COLOR_RED);
- // int* test2 = (int*)malloc(100*sizeof(int));
- // int i = 0;
- // for (i = 0; i<100; i++)
- //  test2[i] = i;
- // for (i = 0; i<100; i++)
- // {
- //  tputs(itoa(test2[i])); 
- // }
- // tputs(itoa(test2));
- // tputs("\n");
+  int* test2 = (int*)malloc(100*sizeof(int));
+  int i = 0;
+  for (i = 0; i<100; i++)
+   test2[i] = i;
+  for (i = 0; i<100; i++)
+  {
+   tputs(itoa(test2[i])); 
+  }
+  tputs(itoa(test2));
+  tputs("\n");
   tputs(itoa(*test));
   tputs("\n");
 }
