@@ -23,15 +23,19 @@ static kATT_superblock_t kATT;
 
 void kATT_Init() {
         kATT.base = mallocBase;
-	kATT.next = NULL;
+	kATT.next = &kATT.last;
 	kATT.last = NULL;
 }
 
 void** kmalloc(size_t size) {
 	kATT_entry_t newBlock;
+	
+	//Debug..
+	printk(itoa(kATT.next), COLOR_RED);
+	printk("\n", COLOR_RED);
 
 	//The table is empty
-	if (kATT.next == NULL) {
+	if (kATT.last == NULL) {
 		newBlock.phy_addr = kATT.base;
 		newBlock.size_bytes = size;
 		newBlock.next = NULL;
@@ -43,7 +47,7 @@ void** kmalloc(size_t size) {
 	}
 
 	// Copy kATT entry to end of allocated block
-	kATT_entry_t* newBlockPtr = memcpy((newBlock.phy_addr + size + sizeof(kATT_entry_t)), &newBlock, 1);
+	kATT_entry_t* newBlockPtr = memcpy((newBlock.phy_addr + size + sizeof(kATT_entry_t)), &newBlock, sizeof(kATT_entry_t));
 	// Append to list
 	kATT.last->next = newBlockPtr;
 	kATT.last = newBlockPtr;
