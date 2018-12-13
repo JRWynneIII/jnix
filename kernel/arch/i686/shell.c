@@ -111,6 +111,8 @@ void mallocTestCmd()
   tputs("\n");
   tputs(itoa(*test));
   tputs("\n");
+  kfree(testArray);
+  kfree(test2);
 }
 
 void run()

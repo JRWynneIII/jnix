@@ -10,6 +10,7 @@ typedef struct kATT_entry {
 	unsigned char* phy_addr;
 	size_t size_bytes;
 	struct kATT_entry* next;
+	struct kATT_entry* prev;
 } kATT_entry_t;
 
 typedef struct kATT_superblock {
@@ -35,11 +36,13 @@ void** kmalloc(size_t size) {
 		newBlock.phy_addr = kATT.base;
 		newBlock.size_bytes = size;
 		newBlock.next = NULL;
+		newBlock.prev = &kATT;
 	}
 	else {
 		newBlock.phy_addr = (kATT.last->phy_addr + kATT.last->size_bytes + 1 + sizeof(kATT_entry_t));
 		newBlock.size_bytes = size;
 		newBlock.next = NULL;
+		newBlock.prev = kATT.last;
 	}
 
 	// Copy kATT entry to end of allocated block
@@ -50,3 +53,16 @@ void** kmalloc(size_t size) {
 	return &(newBlockPtr->phy_addr);
 }
 
+void* kfree(unsigned char* ptr) {
+	kATT_entry_t* cur = &kATT;
+	while(cur->next != NULL) {
+		if (cur->phy_addr == ptr) {
+			//Unlink node and relink the surrounding nodes
+			cur->prev->next = cur->next;
+			cur->next->prev = cur->prev;
+			break;
+		}
+		cur = cur->next;
+	}
+	
+}
