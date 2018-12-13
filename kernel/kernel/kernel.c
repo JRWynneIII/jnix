@@ -27,6 +27,8 @@ void kernel_main()
 	printk("Model: ", COLOR_WHITE);
 	printk(cpu_data.model, COLOR_WHITE);
 	printk("\n", COLOR_WHITE);
+	printk("Enabling A20 Line...\n", COLOR_WHITE);
+	enable_a20();
 	printk("Initilizing VGA Driver....\n",COLOR_WHITE);
 	printk("Installing Global Descriptor Table....\n",COLOR_WHITE);
 	gdt_install();
@@ -36,6 +38,8 @@ void kernel_main()
 	isrs_install();
 	printk("Remapping the PIC and setting up IRQs...\n",COLOR_WHITE);
 	install_irq();
+	printk("Initializing the Kernel Address Translation Table...\n", COLOR_WHITE);
+	kATT_Init();
 	printk("Identifying ATA drives.....\n", COLOR_WHITE);
 	ATA_Init();
 	printk(DRIVE_DATA, COLOR_WHITE);

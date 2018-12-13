@@ -3,11 +3,15 @@
 
 #include "vga.h"
 
+extern void enable_a20();
+
 void printPrettyTime();
 
 void runShell(char* command);
 
-void* allocate_byes(size_t size);
+void** kmalloc(size_t size);
+
+void kATT_Init();
 
 void outportb (unsigned short _port, unsigned char _data);
 

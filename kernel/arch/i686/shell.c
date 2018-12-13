@@ -66,7 +66,7 @@ void itoaTestCmd()
 void mallocTestCmd()
 {
   printk("MallocTest\n", COLOR_WHITE);
-  int* testArray = (int*)malloc(5*sizeof(int));
+  int* testArray = *(int**)kmalloc(5*sizeof(int));
   int test[5] = {1,2,3,4,5};
 
   tputs("Array is allocated at: ");
@@ -109,8 +109,10 @@ void mallocTestCmd()
   }
   tputs(itoa(test2));
   tputs("\n");
-  tputs(itoa(test));
+  tputs(itoa(*test));
   tputs("\n");
+  kfree(testArray);
+  kfree(test2);
 }
 
 void run()
@@ -137,7 +139,7 @@ void help()
 
 void info()
 {
-  printk("HobbyOS\nCopyright GPUJake 2014\n", COLOR_WHITE);
+  printk("jnix\nCopyright GPUJake 2014\n", COLOR_WHITE);
 }
 
 void getCmdCount()
