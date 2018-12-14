@@ -1,7 +1,7 @@
 jnix Kernel
 ============
 
-jnix (Occasionally ~~mis~~pronounced jinx) is to be a POSIX compliant, Unix-like kernel project targeted at 32 bit x86 procs. All code herein is provided AS IS with no guarantee that it will even compile much less work.
+jnix (Occasionally ~~mis~~pronounced jinx) is to be a Unix-like kernel project targeted at 32 bit x86 procs. All code herein is provided AS IS with no guarantee that it will even compile much less work.
 
 To build:
 ----------
