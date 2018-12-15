@@ -3,6 +3,8 @@
 
 #include "vga.h"
 
+void init_paging();
+
 extern void enable_a20();
 
 void printPrettyTime();

@@ -34,6 +34,8 @@ void kernel_main()
 	gdt_install();
 	printk("Installing Interrupt Descriptor Table....\n",COLOR_WHITE);
 	idt_install();
+	printk("Enabling paging...\n", COLOR_WHITE);
+	init_paging();
 	printk("Setting up ISRs...\n",COLOR_WHITE);
 	isrs_install();
 	printk("Remapping the PIC and setting up IRQs...\n",COLOR_WHITE);

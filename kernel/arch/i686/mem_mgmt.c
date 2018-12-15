@@ -3,8 +3,13 @@
 #include <stdint.h>
 #include <kernel/system.h>
 
-unsigned char* mallocBase = (unsigned char*)0x01000000;
-unsigned char* mallocTop = (unsigned char*)0xBFFFFFFF;
+unsigned char* mallocBase __attribute__((aligned(4096))) = (unsigned char*)0x01000000;
+unsigned char* mallocTop __attribute__((aligned(4096))) = (unsigned char*)0xBFFFFFFF;
+
+extern void loadPageDir(unsigned int*);
+extern void enablePaging();
+
+void add_page_table(uint32_t address);
 
 typedef struct kATT_entry {
 	unsigned char* phy_addr;
@@ -46,7 +51,7 @@ void** kmalloc(size_t size) {
 	}
 
 	// Copy kATT entry to end of allocated block
-	kATT_entry_t* newBlockPtr = memcpy((newBlock.phy_addr + size + sizeof(kATT_entry_t)), &newBlock, sizeof(kATT_entry_t));
+	kATT_entry_t* newBlockPtr = memcpy((newBlock.phy_addr + size + sizeof(kATT_entry_t)), &newBlock, sizeof(kATT_entry_t)); 
 	// Append to list
 	kATT.last->next = newBlockPtr;
 	kATT.last = newBlockPtr;
@@ -65,4 +70,21 @@ void* kfree(unsigned char* ptr) {
 		cur = cur->next;
 	}
 	
+}
+
+uint32_t pdir[1024] __attribute__((aligned(4096)));
+
+void init_paging() {
+	uint32_t ptbl[1024] __attribute__((aligned(4096)));
+	for (int i = 0; i < 1024; i++)
+	{
+		pdir[i] = 0x00000002;
+		ptbl[i] = (i * 0x1000) | 3; // supervisor level; rw
+	}
+	// First 400MiB is kernel memory
+	for (int i = 0; i < 100; i++) {
+		pdir[i] = ((unsigned int)ptbl) | 3;
+	}
+	loadPageDir(pdir);
+	enablePaging();
 }
