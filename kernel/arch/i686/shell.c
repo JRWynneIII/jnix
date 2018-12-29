@@ -38,18 +38,18 @@ void clearCmd()
 
 void initForth()
 {
-  printk("ok\n", COLOR_WHITE);
+  kprintf("ok\n", COLOR_WHITE);
   for(;;);
 }
 
 void testTimer()
 {
-  printk("Testing Timer....\n",COLOR_WHITE);
+  kprintf("Testing Timer....\n",COLOR_WHITE);
   int i = 0;
   for (i = 0; i < 10; i++)
   {
     wait(1000);  //wait for 100 milliseconds
-    printk("TICK\n",COLOR_WHITE);
+    kprintf("TICK\n",COLOR_WHITE);
   }
 }
 
@@ -65,7 +65,7 @@ void itoaTestCmd()
 
 void mallocTestCmd()
 {
-  printk("MallocTest\n", COLOR_WHITE);
+  kprintf("MallocTest\n", COLOR_WHITE);
   int* testArray = *(int**)kmalloc(5*sizeof(int));
   int test[5] = {1,2,3,4,5};
 
@@ -82,23 +82,23 @@ void mallocTestCmd()
   if (testArray[0] == 10)
     tputs("\tPASS\n");
   else
-    printk("\tFAIL\n", COLOR_RED);
+    kprintf("\tFAIL\n", COLOR_RED);
   if (testArray[1] == 22)
     tputs("\tPASS\n");
   else
-    printk("\tFAIL\n", COLOR_RED);
+    kprintf("\tFAIL\n", COLOR_RED);
   if (testArray[2] == 33)
     tputs("\tPASS\n");
   else
-    printk("\tFAIL\n", COLOR_RED);
+    kprintf("\tFAIL\n", COLOR_RED);
   if (testArray[3] == 45)
     tputs("\tPASS\n");
   else
-    printk("\tFAIL\n", COLOR_RED);
+    kprintf("\tFAIL\n", COLOR_RED);
   if (testArray[4] == 56)
     tputs("\tPASS\n");
   else
-    printk("\tFAIL\n", COLOR_RED);
+    kprintf("\tFAIL\n", COLOR_RED);
   int* test2 = (int*)malloc(100*sizeof(int));
   int i = 0;
   for (i = 0; i<100; i++)
@@ -117,7 +117,7 @@ void mallocTestCmd()
 
 void run()
 {
-  printk("Running...\n",COLOR_WHITE);
+  kprintf("Running...\n",COLOR_WHITE);
 }
 
 void time()
@@ -127,11 +127,11 @@ void time()
 
 void help()
 {
-  printk("Availible Commands:\n",COLOR_WHITE);
+  kprintf("Availible Commands:\n",COLOR_WHITE);
   NODE* current = &head;
   for (int i = 0; i < numOfCmds; i++)
   {
-    printk(current->name, COLOR_WHITE);
+    kprintf(current->name, COLOR_WHITE);
     tputs("\n");
     current = current->next;  
   }
@@ -139,7 +139,7 @@ void help()
 
 void info()
 {
-  printk("jnix\nCopyright GPUJake 2014\n", COLOR_WHITE);
+  kprintf("jnix\nCopyright GPUJake 2014\n", COLOR_WHITE);
 }
 
 void getCmdCount()
@@ -250,7 +250,7 @@ NODE* findCommand(char* command)
     }
     current = current->next;
   }
-  printk("ERROR COMMAND NOT FOUND\n", COLOR_RED);
+  kprintf("ERROR COMMAND NOT FOUND\n", COLOR_RED);
   return NULL;
 }
 
@@ -261,7 +261,7 @@ void runShell(char* command)
   cmd = findCommand(command);
   if (cmd)
     cmd->cmd();
-  printk("$>> ", COLOR_GREEN);
+  kprintf("$>> ", COLOR_GREEN);
   waitCmd();
 }
 
@@ -277,7 +277,7 @@ void init_shell()
 {
   getCmdCount();
   populateCommands();
-  printk("$>> ", COLOR_GREEN);
+  kprintf("$>> ", COLOR_GREEN);
   irq_install_handler(1, keyboard_handler);
   waitCmd();
 }

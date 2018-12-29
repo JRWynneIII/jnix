@@ -87,13 +87,13 @@ char ata_identify() {
 	unsigned hi = inb(PIO_LBA_HI);
 
 	if (low == 0x14 && hi == 0xEB)
-		printk("PATAPI Device detected\n", COLOR_WHITE);
+		kprintf("PATAPI Device detected\n", COLOR_WHITE);
 	if (low == 0x69 && hi == 0x96)
-		printk("SATAPI Device detected\n", COLOR_WHITE);
+		kprintf("SATAPI Device detected\n", COLOR_WHITE);
 	if (low == 0 && hi == 0)
-		printk("PATA Device detected\n", COLOR_WHITE);
+		kprintf("PATA Device detected\n", COLOR_WHITE);
 	if (low == 0x3c && hi == 0xc3)
-		printk("SATA Device detected\n", COLOR_WHITE);
+		kprintf("SATA Device detected\n", COLOR_WHITE);
 
 //	if (status != 0) {
 //		char cur = inb(PIO_STATUS_REGISTER);
@@ -104,17 +104,17 @@ char ata_identify() {
 //		char lba_mid = inb(PIO_LBA_MID);
 //		char lba_hi = inb(PIO_LBA_HI);
 //		//Debug:
-//		printk(itoa(lba_mid), COLOR_RED);
-//		printk('\n', COLOR_RED);
-//		printk(itoa(lba_hi), COLOR_RED);
-//		printk('\n', COLOR_RED);
+//		kprintf(itoa(lba_mid), COLOR_RED);
+//		kprintf('\n', COLOR_RED);
+//		kprintf(itoa(lba_hi), COLOR_RED);
+//		kprintf('\n', COLOR_RED);
 //
 //		// If drive is an ATA drive, then both lba_mid and lba_hi are 0
 //		if (lba_mid == 0 && lba_hi == 0) {
 //			while(!((1 << 3) & cur)) { 
 //				cur = inb(PIO_STATUS_REGISTER);
 //				if ((1 << 0) & cur) //If ERR bit is set
-//					printk("ERROR BIT SET", COLOR_RED);
+//					kprintf("ERROR BIT SET", COLOR_RED);
 //					return; //TODO: DO SOMETHING HERE
 //			}
 //			
@@ -126,7 +126,7 @@ char ata_identify() {
 //	}
 //	else { //Might be ATAPI, which doesn't respond to IDENTIFY
 //		char cur = inb(PIO_STATUS_REGISTER);
-//		printk(itoa(cur), COLOR_GREEN);
+//		kprintf(itoa(cur), COLOR_GREEN);
 //		while((1 << 7) & cur) { //Poll the status port until BSY (7th bit) is unset
 //			cur = inb(PIO_STATUS_REGISTER);
 //		}
@@ -134,14 +134,14 @@ char ata_identify() {
 //		char lba_mid = inb(PIO_LBA_MID);
 //		char lba_hi = inb(PIO_LBA_HI);
 //		//Debug:
-//		printk("Testing for ATAPI drives...\n", COLOR_RED);
+//		kprintf("Testing for ATAPI drives...\n", COLOR_RED);
 //
 //		// If drive is an ATA drive, then both lba_mid and lba_hi are 0
 //		if (lba_mid == 0 && lba_hi == 0) {
 //			while(!((1 << 3) & cur)) { 
 //				cur = inb(PIO_STATUS_REGISTER);
 //				if ((1 << 0) & cur) //If ERR bit is set
-//					printk("ERROR BIT SET", COLOR_RED);
+//					kprintf("ERROR BIT SET", COLOR_RED);
 //					return; //TODO: DO SOMETHING HERE
 //			}
 //			
@@ -157,9 +157,9 @@ char ATA_Init() {
 	char exists_floating_secondary_drives = ata_floating_bus_check(PIO_SECONDARY_STATUS_REGISTER);
 
 	if (exists_floating_drives == 0)
-		printk("No primary drives detected", COLOR_WHITE);
+		kprintf("No primary drives detected", COLOR_WHITE);
 	else if ( exists_floating_secondary_drives == 0)
-		printk("No secondary drives detected", COLOR_WHITE);
+		kprintf("No secondary drives detected", COLOR_WHITE);
 
 	ata_identify();
 }

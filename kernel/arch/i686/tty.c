@@ -113,16 +113,6 @@ void terminal_putchar(char c)
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 }
  
-void printk(const char* data, uint8_t color)
-{
-	uint8_t old_color = terminal_color;
-	terminal_color = color;
-	size_t datalen = strlen(data);
-	for ( size_t i = 0; i < datalen; i++)
-		terminal_putchar(data[i]);
-	terminal_color = old_color;
-}
-
 void tputs(const char* data)
 {
 	size_t datalen = strlen(data);

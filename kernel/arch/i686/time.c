@@ -47,13 +47,13 @@ uint8_t checkStatus()
 
 int8_t getSeconds()
 {
-//retry:
+retry:
   while(!checkStatus())
   {}
   outb(0x70,NMI_ENABLE<<7|0x00);
   int8_t sec = inb(0x71);
-  //if (sec >=60)
-    //goto retry;
+  if (sec >=60)
+    goto retry;
   return sec;
 }
 
@@ -80,10 +80,13 @@ int8_t getHours()
 
 void printPrettyTime()
 {
-  printk(itoa(getHours()),COLOR_WHITE);
-  printk(":",COLOR_WHITE);
-  printk(itoa(getMinutes()),COLOR_WHITE);
-  printk(":",COLOR_WHITE);
-  printk(itoa(getSeconds()),COLOR_WHITE);
+  char* hrs = itoa(getHours());
+  char* mins = itoa(getMinutes());
+  char* secs = itoa(getSeconds());
+  kprintf(hrs,COLOR_WHITE);
+  kprintf(":",COLOR_WHITE);
+  kprintf(mins,COLOR_WHITE);
+  kprintf(":",COLOR_WHITE);
+  kprintf(secs,COLOR_WHITE);
   tputs("\n");
 }
