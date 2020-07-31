@@ -13,6 +13,6 @@ menuentry "jnix" {
 }
 EOF
 
-grub-mkrescue -o jnix.iso isodir
+grub2-mkrescue -o jnix.iso isodir
 
 ./qemu.sh

@@ -95,6 +95,9 @@ cpuid_t get_cpuid() {
 					case 8:
 						data.model = "Penitum III/Pentium III Xeon - internal L2 cache";
 						break;
+					default:
+						data.model = "Unknown!";
+						break;
 				}
 				break;
 			case 15:

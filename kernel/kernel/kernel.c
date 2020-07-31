@@ -14,12 +14,13 @@
 void kernel_main()
 {
 	terminal_initialize();
-	kprintf("Identifying CPU...", COLOR_WHITE);
+
+	kprintf("Identifying CPU... ", COLOR_WHITE);
 	cpuid_t cpu_data = get_cpuid();
 	kprintf(cpu_data.make, COLOR_WHITE);
 	kprintf("\n", COLOR_WHITE);
 	kprintf("Type: ", COLOR_WHITE);
-	kprintf(itoa(cpu_data.family), COLOR_WHITE);
+	kprintf(cpu_data.type, COLOR_WHITE);
 	kprintf("\n", COLOR_WHITE);
 	kprintf("Family: ", COLOR_WHITE);
 	kprintf(cpu_data.family, COLOR_WHITE);
@@ -43,8 +44,8 @@ void kernel_main()
 	kprintf("Initializing the Kernel Address Translation Table...\n", COLOR_WHITE);
 	kATT_Init();
 	kprintf("Identifying ATA drives.....\n", COLOR_WHITE);
-	ATA_Init();
-	kprintf(DRIVE_DATA, COLOR_WHITE);
+	uint16_t* ataData = ATA_Init();
+	kprintf(ataData, COLOR_WHITE);
         kprintf("Installing Timer ISR....\n",COLOR_WHITE);
  	timer_install();
 //	kprintf("Checking PCI device vendors....\n",COLOR_WHITE);
